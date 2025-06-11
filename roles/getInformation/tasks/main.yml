@@ -1,0 +1,56 @@
+- name:       "CAPTURE USER LOGGED IN"
+  command:    "id"
+  register:   preout
+  ignore_errors: true
+
+
+- name: Print USER OUTPUT
+  debug:
+    var: preout
+  ignore_errors: true
+
+ 
+
+# - name: DSO MIS SCRIPT
+
+#   shell: ". /home/cntrlm/D_SCRIPTS/_ENABLE.sh"
+
+#   register: Oraparamchange
+
+ 
+
+# - name:  PRINT DSO MIS SCRIPT OUTPUT
+
+#   debug:
+
+#     msg: "{{ Oraparamchange.stdout_lines }}"
+
+ 
+
+# - name: Gather Disk Space
+
+#   shell: "df -g  | awk 'NR==2 {print $3}'"
+
+#   register: disk_space
+
+ 
+
+# - name: Print disk_space OUTPUT
+
+#   debug:
+
+#     var: disk_space
+
+#   ignore_errors: true
+
+ 
+
+# - name:  PRINT DISKSPACE
+
+#   debug:
+
+#     msg: "THE FREE DISK SPACE WAS : {{ disk_space.stdout_lines }}" 
+
+ 
+
+ 

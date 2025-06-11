@@ -1,0 +1,22 @@
+name: GET-HOST-INFORMATION
+on:
+  workflow_dispatch:
+
+
+jobs:
+  ANSIBLE-TEST:
+    runs-on:
+      labels: uatcicd     
+    # needs: [CONFIRM-TO-PROCEED] 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: List Files
+        run: |
+          ls -tlr
+          pwd       
+
+      # - name: GET INFORMATION
+      #   run: |
+      #     ansible-playbook -b --extra-vars  'target=HOSRNAME' -e 'was_install_location=/i/AppServer'  -e 'target_dmgr_profile=Dmgr01'   -e 'profile_username=finwas'  --tags "dbconnectioncheck"  playbook/Restart.yml
