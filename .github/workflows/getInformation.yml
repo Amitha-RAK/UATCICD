@@ -17,6 +17,6 @@ jobs:
           ls -tlr
           pwd       
 
-      # - name: GET INFORMATION
-      #   run: |
-      #     ansible-playbook -b --extra-vars  'target=HOSRNAME' -e 'was_install_location=/i/AppServer'  -e 'target_dmgr_profile=Dmgr01'   -e 'profile_username=finwas'  --tags "dbconnectioncheck"  playbook/Restart.yml
+      - name: GET INFORMATION
+        run: |
+          ansible-playbook -b --extra-vars  'target=RIC-CICD-RUNNER'  playbook/getInformation.yml
