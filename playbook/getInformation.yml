@@ -1,6 +1,6 @@
 - hosts: "{{ target }}"
-  become: yes
-  become_method: su
+  # become: yes
+  # become_method: su
   gather_facts: no
   roles:
     - getInformation
