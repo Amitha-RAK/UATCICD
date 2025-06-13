@@ -1,5 +1,5 @@
 - name: Stop Tomcat
-  systemd:
+  ansible.builtin.systemd:
     name: tomcat
     state: started
 
