@@ -2,12 +2,10 @@ name: GET-HOST-INFORMATION
 on:
   workflow_dispatch:
 
-
 jobs:
   ANSIBLE-TEST:
     runs-on:
       labels: uatcicd     
-    # needs: [CONFIRM-TO-PROCEED] 
     steps:
       - name: Checkout code
         uses: actions/checkout@main
@@ -19,7 +17,7 @@ jobs:
 
       - name: TOMCAT STOP
         run: |
-          ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml --tags tomcat_stop
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags tomcat_stop
 
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
@@ -27,4 +25,4 @@ jobs:
 
       - name: TOMCAT START 
         run: |
-          ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml --tags tomcat_start
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags tomcat_start
