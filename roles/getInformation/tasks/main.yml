@@ -53,6 +53,8 @@
             group: "{{ tomcat_group }}"
             mode: '0644'
 
+      tags: deploy   
+
     - name: "TOMCAT START"
       import_tasks: tomcat_start.yml
       tags: tomcat_start
