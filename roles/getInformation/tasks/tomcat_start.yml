@@ -1,0 +1,15 @@
+- name: Stop Tomcat
+  systemd:
+    name: tomcat
+    state: started
+
+# - name: Print USER OUTPUT
+#   debug:
+#     var: preout
+#   ignore_errors: true
+
+ 
+
+
+
+ 

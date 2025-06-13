@@ -19,4 +19,4 @@ jobs:
 
       - name: GET INFORMATION
         run: |
-          ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml
+          ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml --tags tomcat_stop
