@@ -1,4 +1,29 @@
----
+- name: Backup and Deploy ROOT.war to Tomcat
+  hosts: ROC-UATVINYLPLUS
+  become: yes
+  vars:
+    backup_dir: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
+    tomcat_user: apache
+    tomcat_group: apache
+
+  tasks:
+
+    - name: "CAPTURE USER LOGGED IN"
+      command: id
+      register: preout
+      ignore_errors: true
+
+    - name: Print USER OUTPUT
+      debug:
+        var: preout
+      ignore_errors: true
+
+    - name: "TOMCAT STOP"
+      import_tasks: tomcat_stop.yml
+      tags: tomcat_stop
+      ignore_errors: true
+
+
 - name: Create backup directory with timestamp
   file:
     path: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
@@ -19,8 +44,14 @@
 
 - name: Deploy new ROOT.war
   copy:
-    src: /home/qp_setup_admin/Prod_Deployment_Package/Deploy_Datetime/ROOT.war
+    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
     dest: /opt/tomcat/rakins/ROOT.war
     owner: apache
     group: apache
     mode: '0644'
+
+
+- name:   "TOMCAT START"
+  import_tasks: tomcat_start.yml
+  ignore_errors: true
+  tags: tomcat_start 
