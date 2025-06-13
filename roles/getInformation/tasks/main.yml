@@ -1,54 +1,48 @@
-- name: "Backup and Deploy ROOT.war to Tomcat"
-  hosts: ROC-UATVINYLPLUS
-  become: yes
-  vars:
-    backup_dir: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
-    tomcat_user: apache
-    tomcat_group: apache
+---
+# roles/getInformation/tasks/main.yml
 
-  tasks:
-    - name: "CAPTURE USER LOGGED IN"
-      command: id
-      register: preout
-      ignore_errors: true
+- name: Capture the logged-in user
+  command: id
+  register: preout
+  ignore_errors: true
 
-    - name: Print USER OUTPUT
-      debug:
-        var: preout
-      ignore_errors: true
+- name: Print user output
+  debug:
+    var: preout
+  ignore_errors: true
 
-    - name: "TOMCAT STOP"
-      import_tasks: tomcat_stop.yml
-      tags: tomcat_stop
-      ignore_errors: true
+- name: Stop Tomcat
+  import_tasks: tomcat_stop.yml
+  tags: tomcat_stop
+  ignore_errors: true
 
-    - name: Create backup directory with timestamp
-      file:
-        path: "{{ backup_dir }}"
-        state: directory
-        mode: '0755'
+- name: Create backup directory with timestamp
+  file:
+    path: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
+    state: directory
+    mode: '0755'
 
-    - name: Backup existing ROOT.war if it exists
-      command: mv /opt/tomcat/rakins/ROOT.war "{{ backup_dir }}/ROOT.war"
-      args:
-        removes: /opt/tomcat/rakins/ROOT.war
-      ignore_errors: true
+- name: Backup existing ROOT.war if it exists
+  command: mv /opt/tomcat/rakins/ROOT.war "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT.war"
+  args:
+    removes: /opt/tomcat/rakins/ROOT.war
+  ignore_errors: true
 
-    - name: Backup existing ROOT directory if it exists
-      command: mv /opt/tomcat/rakins/ROOT "{{ backup_dir }}/ROOT"
-      args:
-        removes: /opt/tomcat/rakins/ROOT
-      ignore_errors: true
+- name: Backup existing ROOT directory if it exists
+  command: mv /opt/tomcat/rakins/ROOT "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT"
+  args:
+    removes: /opt/tomcat/rakins/ROOT
+  ignore_errors: true
 
-    - name: Deploy new ROOT.war
-      copy:
-        src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
-        dest: /opt/tomcat/rakins/ROOT.war
-        owner: "{{ tomcat_user }}"
-        group: "{{ tomcat_group }}"
-        mode: '0644'
+- name: Deploy new ROOT.war
+  copy:
+    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
+    dest: /opt/tomcat/rakins/ROOT.war
+    owner: apache
+    group: apache
+    mode: '0644'
 
-    - name: "TOMCAT START"
-      import_tasks: tomcat_start.yml
-      ignore_errors: true
-      tags: tomcat_start
+- name: Start Tomcat
+  import_tasks: tomcat_start.yml
+  ignore_errors: true
+  tags: tomcat_start
