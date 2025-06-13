@@ -1,0 +1,39 @@
+---
+- name: Backup and Deploy ROOT.war to Tomcat
+  hosts: uat_servers
+  become: yes
+  vars:
+    backup_dir: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
+
+  tasks:
+    - name: Create backup directory with timestamp
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Backup existing ROOT.war if it exists
+      ansible.builtin.command: mv /opt/tomcat/rakins/ROOT.war {{ backup_dir }}/ROOT.war
+      args:
+        removes: /opt/tomcat/rakins/ROOT.war
+      ignore_errors: yes
+
+    - name: Backup existing ROOT directory if it exists
+      ansible.builtin.command: mv /opt/tomcat/rakins/ROOT {{ backup_dir }}/ROOT
+      args:
+        removes: /opt/tomcat/rakins/ROOT
+      ignore_errors: yes
+
+    - name: Copy new ROOT.war for deployment
+      ansible.builtin.copy:
+        src: /home/qp_setup_admin/Prod_Deployment_Package/Deploy_Datetime/ROOT.war
+        dest: /opt/tomcat/rakins/ROOT.war
+        owner: tomcat
+        group: tomcat
+        mode: '0644'
+
+ 
+
+
+
+ 

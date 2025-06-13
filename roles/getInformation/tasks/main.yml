@@ -1,22 +1,59 @@
-- name:       "CAPTURE USER LOGGED IN"
-  command:    "id"
-  register:   preout
-  ignore_errors: true
+---
+- name: Backup and Deploy ROOT.war to Tomcat
+  hosts: uat_servers
+  become: yes
+  vars:
+    backup_dir: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
+    tomcat_user: apache
+    tomcat_group: apache
 
+  tasks:
 
-- name: Print USER OUTPUT
-  debug:
-    var: preout
-  ignore_errors: true
+    - name: "CAPTURE USER LOGGED IN"
+      command: id
+      register: preout
+      ignore_errors: true
 
- 
-- name:   "TOMCAT STOP"
-  import_tasks: tomcat_stop.yml
-  ignore_errors: true
-  tags: tomcat_stop
+    - name: Print USER OUTPUT
+      debug:
+        var: preout
+      ignore_errors: true
 
+    - name: "TOMCAT STOP"
+      import_tasks: tomcat_stop.yml
+      tags: tomcat_stop
+      ignore_errors: true
 
-- name:   "TOMCAT START"
-  import_tasks: tomcat_start.yml
-  ignore_errors: true
-  tags: tomcat_start 
+    - name: "BACKUP AND DEPLOY ROOT.war"
+      block:
+
+        - name: Create backup directory with timestamp
+          file:
+            path: "{{ backup_dir }}"
+            state: directory
+            mode: '0755'
+
+        - name: Backup existing ROOT.war if it exists
+          command: mv /opt/tomcat/rakins/ROOT.war {{ backup_dir }}/ROOT.war
+          args:
+            removes: /opt/tomcat/rakins/ROOT.war
+          ignore_errors: true
+
+        - name: Backup existing ROOT directory if it exists
+          command: mv /opt/tomcat/rakins/ROOT {{ backup_dir }}/ROOT
+          args:
+            removes: /opt/tomcat/rakins/ROOT
+          ignore_errors: true
+
+        - name: Deploy new ROOT.war
+          copy:
+            src: /home/qp_setup_admin/Prod_Deployment_Package/Deploy_Datetime/ROOT.war
+            dest: /opt/tomcat/rakins/ROOT.war
+            owner: "{{ tomcat_user }}"
+            group: "{{ tomcat_group }}"
+            mode: '0644'
+
+    - name: "TOMCAT START"
+      import_tasks: tomcat_start.yml
+      tags: tomcat_start
+      ignore_errors: true
