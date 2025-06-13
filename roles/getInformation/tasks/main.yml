@@ -11,7 +11,7 @@
 
  
 - name:   "TOMCAT STOP"
-  include: tomcat_stop.yml
+  import_tasks : tomcat_stop.yml
   ignore_errors: true
   tags: tomcat_stop
 
