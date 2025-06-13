@@ -1,7 +1,14 @@
-- name: Stop Tomcat
-  ansible.builtin.systemd:
-    name: tomcat
-    state: started
+# - name: Stop Tomcat
+#   ansible.builtin.systemd:
+#     name: tomcat
+#     state: started
+
+
+- name: TOMCAT START
+  systemd: 
+    name: tomcat
+    state: stated
+
 
 # - name: Print USER OUTPUT
 #   debug:

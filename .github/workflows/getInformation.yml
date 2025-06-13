@@ -17,6 +17,10 @@ jobs:
           ls -tlr
           pwd       
 
-      - name: GET INFORMATION
+      - name: TOMCAT STOP
         run: |
           ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml --tags tomcat_stop
+
+      - name: TOMCAT START 
+        run: |
+          ansible-playbook -b --extra-vars  'target=ROC-UATVINYLPLUS'  playbook/getInformation.yml --tags tomcat_start

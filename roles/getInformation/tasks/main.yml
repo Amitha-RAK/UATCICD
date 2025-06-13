@@ -16,4 +16,7 @@
   tags: tomcat_stop
 
 
- 
+- name:   "TOMCAT START"
+  import_tasks: tomcat_start.yml
+  ignore_errors: true
+  tags: tomcat_start 
