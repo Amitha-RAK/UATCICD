@@ -7,7 +7,7 @@
 - name: TOMCAT START
   systemd: 
     name: tomcat
-    state: stated
+    state: started
 
 
 # - name: Print USER OUTPUT
