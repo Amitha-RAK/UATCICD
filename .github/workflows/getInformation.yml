@@ -1,4 +1,4 @@
-name: GET-HOST-INFORMATION
+name: TOMCAT-STOP-START
 on:
   workflow_dispatch:
 
