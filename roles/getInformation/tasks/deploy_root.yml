@@ -30,3 +30,4 @@
     group: tomcat
     mode: '0644'
   tags: deploy
+  remote_src: yes
