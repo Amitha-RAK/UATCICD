@@ -26,8 +26,8 @@
   ansible.builtin.copy:
     src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war
     dest: /opt/tomcat/rakins/ROOT.war
-    owner: tomcat
-    group: tomcat
+    owner: apache
+    group: apache
     mode: '0644'
   tags: deploy
   remote_src: yes
