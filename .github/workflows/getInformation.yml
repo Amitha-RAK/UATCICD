@@ -9,7 +9,7 @@ on:
 
 
 jobs:
-  ANSIBLE-TEST:
+  STOP_TOMCAT:
     runs-on:
       labels: uatcicd     
     steps:
@@ -25,9 +25,35 @@ jobs:
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags tomcat_stop
 
+  BACKUP_DEPLOY:
+    needs: [STOP_TOMCAT]
+    runs-on:
+      labels: uatcicd     
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: List Files
+        run: |
+          ls -tlr
+          pwd       
+
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${deployment_directory}" playbook/getInformation.yml --tags deploy
+
+  TOMCAT_START:
+    needs: [BACKUP_DEPLOY]
+    runs-on:
+      labels: uatcicd     
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: List Files
+        run: |
+          ls -tlr
+          pwd   
 
       - name: TOMCAT START 
         run: |
