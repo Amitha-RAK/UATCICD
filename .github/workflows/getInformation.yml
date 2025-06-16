@@ -1,6 +1,12 @@
 name: GET-HOST-INFORMATION
 on:
   workflow_dispatch:
+    inputs:
+      deployment_directory: 
+        description: Enter the directory to be deployed
+        required: true
+        default: Deploy_UAT_27052025
+
 
 jobs:
   ANSIBLE-TEST:
@@ -21,7 +27,7 @@ jobs:
 
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${deployment_directory}" playbook/getInformation.yml --tags deploy
 
       - name: TOMCAT START 
         run: |
