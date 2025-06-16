@@ -1,52 +1,22 @@
----
-# roles/getInformation/tasks/main.yml
-
-- name: Capture the logged-in user
-  command: id
-  register: preout
+- name:       "CAPTURE USER LOGGED IN"
+  command:    "id"
+  register:   preout
   ignore_errors: true
 
-- name: Print user output
+
+- name: Print USER OUTPUT
   debug:
     var: preout
   ignore_errors: true
 
-- name: Stop Tomcat
+ 
+- name:   "TOMCAT STOP"
   import_tasks: tomcat_stop.yml
+  ignore_errors: true
   tags: tomcat_stop
-  ignore_errors: true
 
-- name: Create backup directory with timestamp
-  file:
-    path: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
-    state: directory
-    mode: '0755'
-  tags: deploy
 
-- name: Backup existing ROOT.war if it exists
-  command: mv /opt/tomcat/rakins/ROOT.war "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT.war"
-  args:
-    removes: /opt/tomcat/rakins/ROOT.war
-  ignore_errors: true
-  tags: deploy
-
-- name: Backup existing ROOT directory if it exists
-  command: mv /opt/tomcat/rakins/ROOT "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT"
-  args:
-    removes: /opt/tomcat/rakins/ROOT
-  ignore_errors: true
-  tags: deploy
-
-- name: Deploy new ROOT.war
-  copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
-    dest: /opt/tomcat/rakins/ROOT.war
-    owner: apache
-    group: apache
-    mode: '0644'
-  tags: deploy
-
-- name: Start Tomcat
+- name:   "TOMCAT START"
   import_tasks: tomcat_start.yml
   ignore_errors: true
-  tags: tomcat_start
+  tags: tomcat_start 
