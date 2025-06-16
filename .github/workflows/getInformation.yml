@@ -19,7 +19,10 @@ jobs:
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags tomcat_stop
 
-     
+      - name: BACKUP AND DEPLOY ROOT.war
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags deploy
+
       - name: TOMCAT START 
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/getInformation.yml --tags tomcat_start
