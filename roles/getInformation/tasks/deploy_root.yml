@@ -21,7 +21,7 @@
 
 - name: Copy new ROOT.war for deployment
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Prod_Deployment_Package/Deploy_Datetime/ROOT.war
+    remote_src: /home/qp_setup_admin/Prod_Deployment_Package/Deploy_Datetime/ROOT.war
     dest: /opt/tomcat/rakins/ROOT.war
     owner: tomcat
     group: tomcat
