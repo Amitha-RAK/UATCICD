@@ -16,7 +16,7 @@
   tags: deploy
 
 - name: Move new ROOT.war from deployment package to Tomcat webapps
-  ansible.builtin.command: cp /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war /opt/tomcat/rakins/ROOT.war
+  ansible.builtin.command: cp /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_27052025/ROOT.war /opt/tomcat/rakins/ROOT.war
   tags: deploy
 
 - name: Set ownership and permissions on new ROOT.war
