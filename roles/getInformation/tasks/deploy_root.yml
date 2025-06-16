@@ -1,6 +1,5 @@
-- name: Gather facts to enable ansible_date_time
-  ansible.builtin.setup:
-  tags: always
+
+
 
 - name: Create backup directory with timestamp
   ansible.builtin.file:
