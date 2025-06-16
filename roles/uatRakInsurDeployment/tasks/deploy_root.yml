@@ -21,7 +21,9 @@
     owner: apache
     group: apache
     mode: '0644'
+    remote_src: yes
   tags: deploy
+ 
 
 # - name: Set ownership and permissions on new ROOT.war
 #   ansible.builtin.file:
