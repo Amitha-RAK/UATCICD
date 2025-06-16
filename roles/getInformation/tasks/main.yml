@@ -39,7 +39,7 @@
 
 - name: Deploy new ROOT.war
   copy:
-    remote_src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
+    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_Datetime/ROOT.war
     dest: /opt/tomcat/rakins/ROOT.war
     owner: apache
     group: apache
