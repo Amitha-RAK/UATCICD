@@ -1,0 +1,34 @@
+name: UAT-RAKINSURANCE-DEPLOYMENT
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_directory: 
+        description: Enter the directory to be deployed
+        required: true
+        default: Deploy_UAT_27052025
+
+
+jobs:
+  ANSIBLE-TEST:
+    runs-on:
+      labels: uatcicd     
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: List Files
+        run: |
+          ls -tlr
+          pwd       
+
+      - name: TOMCAT STOP
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_stop
+
+      - name: BACKUP AND DEPLOY ROOT.war
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${deployment_directory}" playbook/uatRakInsurDeployment.yml --tags deploy
+
+      - name: TOMCAT START 
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_start
