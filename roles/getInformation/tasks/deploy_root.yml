@@ -15,19 +15,14 @@
   ignore_errors: yes
   tags: deploy
 
-- name: Backup existing ROOT directory if it exists
-  ansible.builtin.command: mv /opt/tomcat/rakins/ROOT /opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT
-  args:
-    removes: /opt/tomcat/rakins/ROOT
-  ignore_errors: yes
+- name: Move new ROOT.war from deployment package to Tomcat webapps
+  ansible.builtin.command: cp /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war /opt/tomcat/rakins/ROOT.war
   tags: deploy
 
-- name: Copy new ROOT.war for deployment
-  ansible.builtin.copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war
-    dest: /opt/tomcat/rakins/ROOT.war
+- name: Set ownership and permissions on new ROOT.war
+  ansible.builtin.file:
+    path: /opt/tomcat/rakins/ROOT.war
     owner: apache
     group: apache
     mode: '0644'
   tags: deploy
-  remote_src: yes

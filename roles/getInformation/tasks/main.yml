@@ -37,10 +37,13 @@
   ignore_errors: true
   tags: deploy
 
-- name: Deploy new ROOT.war
-  copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war
-    dest: /opt/tomcat/rakins/ROOT.war
+- name: Move new ROOT.war from deployment package to Tomcat directory
+  command: cp /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_05062025/ROOT.war /opt/tomcat/rakins/ROOT.war
+  tags: deploy
+
+- name: Set permissions and ownership for new ROOT.war
+  file:
+    path: /opt/tomcat/rakins/ROOT.war
     owner: apache
     group: apache
     mode: '0644'
