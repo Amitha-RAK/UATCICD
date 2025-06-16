@@ -32,7 +32,7 @@ jobs:
     steps:    
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${deployment_directory}" playbook/uatRakInsurDeployment.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags deploy
 
   TOMCAT_START:
     needs: [BACKUP_DEPLOY]
