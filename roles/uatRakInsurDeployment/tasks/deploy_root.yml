@@ -1,49 +1,32 @@
 
-
-
 - name: Create backup directory with timestamp
   ansible.builtin.file:
-    path: "/home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}"
+    path: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
     state: directory
     mode: '0755'
   tags: deploy
 
-- name: Backup existing rakins folder
-  ansible.builtin.command: mv /opt/tomcat/rakins/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
+- name: Backup existing ROOT.war if it exists
+  ansible.builtin.command: mv /opt/tomcat/rakins/ROOT.war /opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT.war
   args:
-    removes: /opt/tomcat/rakins/
-  tags: deploy
-  
-- name: Backup existing rakinsurance folder
-  ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
-  args:
-    removes: /var/www/html/rakinsurance/
+    removes: /opt/tomcat/rakins/ROOT.war
   tags: deploy
 
-- name: Move new files from deployment package to Tomcat webapps
+- name: Move new ROOT.war from deployment package to Tomcat webapps
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/
-    dest: /opt/tomcat/rakins/
+    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/ROOT.war
+    dest: /opt/tomcat/rakins/ROOT.war
     owner: apache
     group: apache
     mode: '0644'
     remote_src: yes
   tags: deploy
-  
-
-- name: Extract deployment date from deployment directory
-  set_fact:
-    deploy_date: "{{ deploy_dir.split('_')[-1] }}"
-  tags: unzip
-
-- name: Unzip rak-uat-date.zip into the same folder
-  ansible.builtin.unarchive:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-{{ deploy_date }}.zip
-    dest: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/
-    remote_src: yes
-  become: true
-  
-
-  
-
  
+
+# - name: Set ownership and permissions on new ROOT.war
+#   ansible.builtin.file:
+#     path: /opt/tomcat/rakins/ROOT.war
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#   tags: deploy
