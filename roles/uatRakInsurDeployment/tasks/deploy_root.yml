@@ -33,7 +33,7 @@
   
 - name: Unzip rak-uat-date.zip into the same folder
   ansible.builtin.unarchive:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-date.zip
+    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}//rak-uat-{{ deploy_date }}.zip
     dest: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/
     remote_src: yes
   become: true
