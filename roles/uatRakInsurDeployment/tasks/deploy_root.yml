@@ -15,9 +15,9 @@
   tags: deploy
   
 - name: Backup existing rakinsurance folder
-  ansible.builtin.command: mv /var/www/html/rakinsurance /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
+  ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
   args:
-    removes: /var/www/html/rakinsurance
+    removes: /var/www/html/rakinsurance/
   tags: deploy
 
 - name: Move new files from deployment package to Tomcat webapps
