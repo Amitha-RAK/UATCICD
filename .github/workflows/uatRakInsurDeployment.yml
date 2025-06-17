@@ -35,8 +35,18 @@ jobs:
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags deploy
 
-  TOMCAT_START:
+  UNZIP_RAK_UAT_FILE:
     needs: [BACKUP_DEPLOY]
+    runs-on: 
+      labels: uatcicd
+    steps:
+      - name: BACKUP AND DEPLOY ROOT.war
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
+
+
+  TOMCAT_START:
+    needs: [UNZIP_RAK_UAT_FILE]
     runs-on: 
       labels: uatcicd
     steps:
