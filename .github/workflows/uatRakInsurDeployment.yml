@@ -1,4 +1,5 @@
 name: UAT-RAKINSURANCE-DEPLOYMENT
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,11 +8,11 @@ on:
         required: true
         default: Deploy_UAT_27052025
 
-
 jobs:
+
   STOP_TOMCAT:
-    runs-on:
-      labels: uatcicd     
+    runs-on: 
+      labels: uatcicd
     steps:
       - name: Checkout code
         uses: actions/checkout@main
@@ -19,7 +20,7 @@ jobs:
       - name: List Files
         run: |
           ls -tlr
-          pwd       
+          pwd
 
       - name: TOMCAT STOP
         run: |
@@ -27,18 +28,22 @@ jobs:
 
   BACKUP_DEPLOY:
     needs: [STOP_TOMCAT]
-    runs-on:
-      labels: uatcicd     
-    steps:    
+    runs-on: 
+      labels: uatcicd
+    steps:
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags deploy
 
+      - name: UNZIP rak-uat-date.zip
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
+
   TOMCAT_START:
     needs: [BACKUP_DEPLOY]
-    runs-on:
-      labels: uatcicd     
+    runs-on: 
+      labels: uatcicd
     steps:
-      - name: TOMCAT START 
+      - name: TOMCAT START
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_start
+          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
