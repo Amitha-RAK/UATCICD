@@ -1,15 +1,23 @@
 
 
-- name: Backup existing rakins folder if it exists
-  ansible.builtin.command: mv /var/www/html/rakinsurance /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
+- name: Backup existing rakinsurance folder if it exists
+  ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
   args:
     removes: /var/www/html/rakinsurance/
-  tags: deploy
+  tags: unzip
 
 - name: Extract deployment date from deployment directory
   set_fact:
     deploy_date: "{{ deploy_dir.split('_')[-1] }}"
   tags: unzip
+
+
+- name: Ensure destination directory exists
+  ansible.builtin.file:
+    path: /var/www/html/rakinsurance/
+    state: directory
+    mode: '0755'
+
 
 - name: Unzip rak-uat zip file dynamically
   ansible.builtin.unarchive:
