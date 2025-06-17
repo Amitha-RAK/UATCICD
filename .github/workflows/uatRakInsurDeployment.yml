@@ -26,7 +26,7 @@ jobs:
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_stop
 
-  BACKUP_DEPLOY:
+  BACKUP_DEPLOY_UNZIP:
     needs: [STOP_TOMCAT]
     runs-on: 
       labels: uatcicd
@@ -40,7 +40,7 @@ jobs:
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
 
   TOMCAT_START:
-    needs: [BACKUP_DEPLOY]
+    needs: [BACKUP_DEPLOY_UNZIP]
     runs-on: 
       labels: uatcicd
     steps:

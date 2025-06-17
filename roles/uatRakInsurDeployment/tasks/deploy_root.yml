@@ -30,10 +30,15 @@
     remote_src: yes
   tags: deploy
   
-  
+
+- name: Extract deployment date from deployment directory
+  set_fact:
+    deploy_date: "{{ deploy_dir.split('_')[-1] }}"
+  tags: unzip
+
 - name: Unzip rak-uat-date.zip into the same folder
   ansible.builtin.unarchive:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}//rak-uat-{{ deploy_date }}.zip
+    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-{{ deploy_date }}.zip
     dest: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/
     remote_src: yes
   become: true
