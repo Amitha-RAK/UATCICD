@@ -59,7 +59,7 @@
   tags: deploy
   ignore_errors: true
 
-- name: Unzip
-  import_tasks: unzip.yml
-  tags: unzip
-  ignore_errors: true
+# - name: Unzip
+#   import_tasks: unzip.yml
+#   tags: unzip
+#   ignore_errors: true
