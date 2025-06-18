@@ -4,12 +4,12 @@
   ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ ansible_date_time.iso8601_basic_short }}
   args:
     removes: /var/www/html/rakinsurance/
-  tags: unzip
+  tags: deploy
 
 - name: Extract deployment date from deployment directory
   set_fact:
     deploy_date: "{{ deploy_dir.split('_')[-1] }}"
-  tags: unzip
+  tags: deploy
 
 
 - name: Ensure destination directory exists
