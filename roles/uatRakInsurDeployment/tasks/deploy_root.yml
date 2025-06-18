@@ -28,8 +28,8 @@
   tags: deploy
 
 - name: Move new files from deployment package to Tomcat webapps
-  ansible.builtin.copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*
+  ansible.builtin.unarchive:
+    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
