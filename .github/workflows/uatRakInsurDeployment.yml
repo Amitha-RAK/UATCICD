@@ -33,7 +33,8 @@ jobs:
     steps:
       - name: BACKUP AND DEPLOY ROOT.war
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags deploy
+          DATE=$(date +'%Y-%m-%d-%H-%M-%S')  
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags deploy
 
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
