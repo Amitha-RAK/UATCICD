@@ -27,6 +27,18 @@
   ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}
   tags: deploy
 
+
+- name: Create Rakinsurance folder
+  ansible.builtin.file :
+    path: /var/www/html/rakinsurance/
+    state: directory
+    recurse: yes
+    owner: apache
+    group: apache
+    mode: '0644'
+  tags: deploy
+
+
 - name: Move new files from deployment package to Tomcat webapps
   ansible.builtin.unarchive:
     src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip

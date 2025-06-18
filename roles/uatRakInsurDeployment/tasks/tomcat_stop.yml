@@ -11,20 +11,20 @@
 
  
 
-- name: Gather Disk Space
-  shell: "df -h  | awk 'NR==2 {print $3}'"
-  register: disk_space
+# - name: Gather Disk Space
+#   shell: "df -h  | awk 'NR==2 {print $3}'"
+#   register: disk_space
  
 
-- name: Print disk_space OUTPUT
-  debug:
-    var: disk_space
-  ignore_errors: true
+# - name: Print disk_space OUTPUT
+#   debug:
+#     var: disk_space
+#   ignore_errors: true
 
 
-- name:  PRINT DISKSPACE
-  debug:
-    msg: "THE FREE DISK SPACE WAS : {{ disk_space.stdout_lines }}" 
+# - name:  PRINT DISKSPACE
+#   debug:
+#     msg: "THE FREE DISK SPACE WAS : {{ disk_space.stdout_lines }}" 
 
 - name: TOMCAT STOP 
   systemd: 
