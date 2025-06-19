@@ -65,6 +65,7 @@
   tags: deploy
 
 
+
 # - name: Move new files from deployment package to Tomcat webapps
 #   ansible.builtin.unarchive:
 #     src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
