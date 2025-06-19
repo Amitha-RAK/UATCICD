@@ -39,15 +39,33 @@
   tags: deploy
 
 
-- name: Move new files from deployment package to Tomcat webapps
+- name: Find rak-uat ZIP file with date
+  shell: ls -1 /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
+  register: rak_zip
+  changed_when: false
+  failed_when: rak_zip.stdout == ""
+  
+
+- name: Unarchive matched rak-uat ZIP
   ansible.builtin.unarchive:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
+    src: "{{ rak_zip.stdout }}"
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
     mode: '0644'
     remote_src: yes
   tags: deploy
+
+
+# - name: Move new files from deployment package to Tomcat webapps
+#   ansible.builtin.unarchive:
+#     src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
+#     dest: /var/www/html/rakinsurance/
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#     remote_src: yes
+#   tags: deploy
 
 # - name: Set ownership and permissions on new ROOT.war
 #   ansible.builtin.file:
