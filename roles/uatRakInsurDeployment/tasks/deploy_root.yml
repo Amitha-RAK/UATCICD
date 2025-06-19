@@ -28,42 +28,30 @@
   tags: deploy
 
 
-# - name: Create Rakinsurance folder
-#   ansible.builtin.file :
-#     path: /var/www/html/rakinsurance/
-#     state: directory
-#     recurse: yes
-#     owner: apache
-#     group: apache
-#     mode: '0644'
-#   tags: deploy
-
-
-- name: Find rak-uat ZIP file with date
-  shell: ls -1 /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/rak-uat-*.zip
-  register: rak_zip
-  changed_when: false
-  failed_when: rak_zip.stdout == ""
-
-- name: Ensure /var/www/html/rakinsurance exists before unarchiving
-  ansible.builtin.file:
+- name: Create Rakinsurance folder
+  ansible.builtin.file :
     path: /var/www/html/rakinsurance/
     state: directory
+    recurse: yes
     owner: apache
     group: apache
-    mode: '0755'
+    mode: '0644'
   tags: deploy
 
-- name: Unarchive matched rak-uat ZIP
+
+- name: Set formatted date for filename
+  set_fact:
+    zip_date: "{{ ansible_date_time.date | regex_replace('-', '') }}"
+
+- name: Unarchive rak-uat ZIP with today's date
   ansible.builtin.unarchive:
-    src: "{{ rak_zip.stdout }}"
+    src: "/home/qp_setup_admin/UAT_Deployment_Package/{{ deploy_dir }}/rak-uat-{{ zip_date }}.zip"
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
     mode: '0644'
     remote_src: yes
   tags: deploy
-
 
 
 # - name: Move new files from deployment package to Tomcat webapps
