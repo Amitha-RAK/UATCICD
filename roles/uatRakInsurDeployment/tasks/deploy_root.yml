@@ -12,16 +12,6 @@
   #   removes: /opt/tomcat/rakins/
   tags: deploy
 
-- name: Create rakins folder
-  ansible.builtin.file :
-    path: /opt/tomcat/rakins/
-    state: directory
-    recurse: yes
-    owner: apache
-    group: apache
-    mode: '0644'
-  tags: deploy
-
 
 - name: Move new files from deployment package to Tomcat webapps
   ansible.builtin.copy:
