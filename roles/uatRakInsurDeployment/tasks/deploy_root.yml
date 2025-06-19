@@ -39,9 +39,10 @@
   tags: deploy
 
 
-- name: Set formatted date for filename
+- name: Reformat date to DDMMYYYY
   set_fact:
-    zip_date: "{{ ansible_date_time.date | regex_replace('-', '') }}"
+    zip_date: "{{ ansible_date_time.date | regex_replace('-', '')[6:8] }}{{ ansible_date_time.date | regex_replace('-', '')[4:6] }}{{ ansible_date_time.date | regex_replace('-', '')[0:4] }}"
+
 
 - name: Unarchive rak-uat ZIP with today's date
   ansible.builtin.unarchive:
