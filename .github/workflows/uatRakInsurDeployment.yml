@@ -14,7 +14,7 @@ jobs:
     runs-on: 
       labels: uatcicd
     steps:
-      - name: TOMCAT START
+      - name: HTTPD STOP
         run: |
           ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_stop
 
@@ -71,7 +71,7 @@ jobs:
     runs-on: 
       labels: uatcicd
     steps:
-      - name: TOMCAT START
+      - name: HTTPD START
         run: |
           ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_start
 
