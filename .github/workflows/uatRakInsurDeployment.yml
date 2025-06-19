@@ -10,17 +10,7 @@ on:
 
 jobs:
 
-  HTTPD_STOP:
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: HTTPD STOP
-        run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags httpd_stop
-
-
   STOP_TOMCAT:
-    needs: [HTTPD_STOP]
     runs-on: 
       labels: uatcicd
     steps:
@@ -63,16 +53,4 @@ jobs:
     steps:
       - name: TOMCAT START
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_start
-
-
-  HTTPD_START:
-    needs: [TOMCAT_START]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: HTTPD START
-        run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags httpd_start
-
-  
+          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
