@@ -28,15 +28,15 @@
   tags: deploy
 
 
-- name: Create Rakinsurance folder
-  ansible.builtin.file :
-    path: /var/www/html/rakinsurance/
-    state: directory
-    recurse: yes
-    owner: apache
-    group: apache
-    mode: '0644'
-  tags: deploy
+# - name: Create Rakinsurance folder
+#   ansible.builtin.file :
+#     path: /var/www/html/rakinsurance/
+#     state: directory
+#     recurse: yes
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#   tags: deploy
 
 
 - name: Find rak-uat ZIP file with date
@@ -44,7 +44,7 @@
   register: rak_zip
   changed_when: false
   failed_when: rak_zip.stdout == ""
-  
+
 
 - name: Unarchive matched rak-uat ZIP
   ansible.builtin.unarchive:
