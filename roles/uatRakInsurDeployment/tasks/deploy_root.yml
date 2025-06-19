@@ -45,6 +45,14 @@
   changed_when: false
   failed_when: rak_zip.stdout == ""
 
+- name: Ensure /var/www/html/rakinsurance exists before unarchiving
+  ansible.builtin.file:
+    path: /var/www/html/rakinsurance/
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755'
+  tags: deploy
 
 - name: Unarchive matched rak-uat ZIP
   ansible.builtin.unarchive:
