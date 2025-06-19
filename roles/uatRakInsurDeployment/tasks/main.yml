@@ -11,6 +11,11 @@
     var: preout
   ignore_errors: true
 
+- name: Stop HTTPD
+  import_tasks: httpd_stop.yml
+  tags: tomcat_stop
+  ignore_errors: true
+
 - name: Stop Tomcat
   import_tasks: tomcat_stop.yml
   tags: tomcat_stop
@@ -57,5 +62,10 @@
 - name: Backup and Deploy
   import_tasks: deploy_root.yml
   tags: deploy
+  ignore_errors: true
+
+- name: Start HTTPD
+  import_tasks: httpd_start.yml
+  tags: tomcat_stop
   ignore_errors: true
 
