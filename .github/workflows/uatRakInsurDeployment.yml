@@ -66,6 +66,7 @@ jobs:
           ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
 
   HTTPD_START:
+    needs: [TOMCAT_START]
     runs-on: 
       labels: uatcicd
     steps:
