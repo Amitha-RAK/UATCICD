@@ -39,9 +39,13 @@
   tags: deploy
 
 
-- name: Reformat date to DDMMYYYY
+- name: Reformat date to DDMMYYYY format
   set_fact:
-    zip_date: "{{ ansible_date_time.date | regex_replace('-', '')[6:8] }}{{ ansible_date_time.date | regex_replace('-', '')[4:6] }}{{ ansible_date_time.date | regex_replace('-', '')[0:4] }}"
+    zip_date: >-
+      {{ (ansible_date_time.date | regex_replace('-', ''))[6:8]
+         + (ansible_date_time.date | regex_replace('-', ''))[4:6]
+         + (ansible_date_time.date | regex_replace('-', ''))[0:4] }}
+  tags: deploy
 
 
 - name: Unarchive rak-uat ZIP with today's date
@@ -53,6 +57,7 @@
     mode: '0644'
     remote_src: yes
   tags: deploy
+
 
 
 # - name: Move new files from deployment package to Tomcat webapps
