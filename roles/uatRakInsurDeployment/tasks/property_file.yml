@@ -3,7 +3,7 @@
     name: tomcat
     state: stopped
   become: true
-  tags: deploy
+
 
 - name: Copy propsuat directory from backup to classes folder
   ansible.builtin.copy:
@@ -13,11 +13,11 @@
     group: apache
     mode: '0755'
     remote_src: yes
-  tags: deploy
+  tags: propsuat_copy
 
 - name: Start Tomcat service
   ansible.builtin.service:
     name: tomcat
     state: started
   become: true
-  tags: deploy
+
