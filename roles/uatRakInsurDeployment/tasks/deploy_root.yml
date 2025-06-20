@@ -40,13 +40,11 @@
   tags: deploy
 
 
-- name: Reformat date to DDMMYYYY format
+- name: Extract deployment date from deploy_dir
   set_fact:
-    zip_date: >-
-      {{ (ansible_date_time.date | regex_replace('-', ''))[6:8]
-         + (ansible_date_time.date | regex_replace('-', ''))[4:6]
-         + (ansible_date_time.date | regex_replace('-', ''))[0:4] }}
+    zip_date: "{{ deploy_dir | regex_search('\\d{8}') }}"
   tags: deploy
+
 
 
 - name: Unarchive rak-uat ZIP with today's date
