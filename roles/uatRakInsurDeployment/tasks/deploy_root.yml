@@ -57,6 +57,15 @@
     remote_src: yes
   tags: deploy
 
+- name: Copy fixedfiles from backup into new rakinsurance folder
+  ansible.builtin.copy:
+    src: "/home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/fixedfiles/"
+    dest: /var/www/html/rakinsurance/
+    owner: apache
+    group: apache
+    mode: '0644'
+    remote_src: yes
+  tags: deploy
 
 
 # - name: Move new files from deployment package to Tomcat webapps
