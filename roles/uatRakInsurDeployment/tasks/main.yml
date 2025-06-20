@@ -69,7 +69,7 @@
   tags: httpd_start
   ignore_errors: true
 
-- name: Apply property file for deployment
-  import_tasks: property_file.yml
-  tags: propsuat_copy
-  ignore_errors: true
+# - name: Apply property file for deployment
+#   import_tasks: property_file.yml
+#   tags: propsuat_copy
+#   ignore_errors: true
