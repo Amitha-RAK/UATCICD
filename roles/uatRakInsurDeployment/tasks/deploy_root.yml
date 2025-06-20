@@ -23,6 +23,14 @@
     remote_src: yes
   tags: deploy
 
+- name: List contents of META-INF
+  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/META-INF
+  register: meta_check
+  
+- name: Show META-INF contents
+  debug:
+    var: meta_check.stdout_lines
+
 
 - name: Backup existing rakinsurance folder if it exists
   ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}
