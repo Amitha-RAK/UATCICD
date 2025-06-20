@@ -7,8 +7,8 @@
 
 - name: Copy propsuat directory from backup to classes folder
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backup_Before_UAT_Deployment/backup_{{ folder_date }}/ROOT/WEB-INF/classes/propsuat
-    dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/
+    src: /home/qp_setup_admin/Backup_Before_UAT_Deployment/backup_{{ folder_date }}/rakins/ROOT/WEB-INF/classes/propsuat/
+    dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
     owner: tomcat
     group: tomcat
     mode: '0755'
