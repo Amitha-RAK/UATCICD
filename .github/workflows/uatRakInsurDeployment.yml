@@ -44,7 +44,7 @@ jobs:
       - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}-" playbook/uatRakInsurDeployment.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags deploy
 
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
