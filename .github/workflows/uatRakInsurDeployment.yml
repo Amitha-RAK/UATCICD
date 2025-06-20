@@ -9,30 +9,14 @@ on:
         default: Deploy_UAT_27052025
 
 jobs:
+
   HTTPD_STOP:
-    outputs:
-      test-result: ${{ steps.set_outputs.outputs.test-result }}
     runs-on: 
       labels: uatcicd
     steps:
       - name: HTTPD STOP
         run: |
           ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_stop
-
-      - name: Change env variable
-        run: echo "::set-env name=Current_date::$(date +'%Y%m%d%H%M')"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
-
-      - name: Print new value of env variable
-        run: echo "Current_date = $Current_date"
-
-      - name: set outputs
-        id: set_outputs
-        run: |
-          echo "::set-output name=test-result::$Current_date"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"          
 
 
   STOP_TOMCAT:
@@ -59,7 +43,8 @@ jobs:
     steps:
       - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date=${{ needs.HTTPD_STOP.outputs.test-result }} playbook/uatRakInsurDeployment.yml --tags deploy
+          DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}-" playbook/uatRakInsurDeployment.yml --tags deploy
 
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
@@ -78,7 +63,7 @@ jobs:
     steps:
       - name: TOMCAT START
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_start
+          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
 
 
   PROPSUAT_COPY:
@@ -88,7 +73,8 @@ jobs:
     steps:
     - name: Copy propsuat from backup and restart Tomcat
       run: |
-        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date=${{ needs.HTTPD_STOP.outputs.test-result }} playbook/uatRakInsurDeployment.yml --tags propsuat_copy
+        DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags propsuat_copy
 
   
   HTTPD_START:
