@@ -13,10 +13,9 @@
   when: backup_dirs.matched > 0
   tags: deploy
 
-
-- name: Move ROOT.war file from today's backup folder to Tomcat webapps
+- name: Move ROOT.war from latest backup to Tomcat webapps
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT.war
+    src: "{{ latest_backup_path.path }}/rakins/ROOT.war"
     dest: /opt/tomcat/rakins/
     owner: apache
     group: apache
@@ -24,16 +23,37 @@
     remote_src: yes
   tags: deploy
 
-
-- name: Copy rakinsurance from backup into html/rakinsurance folder
+- name: Copy rakinsurance from latest backup to html folder
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/
+    src: "{{ latest_backup_path.path }}/rakinsurance/"
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
     mode: '0644'
     remote_src: yes
   tags: deploy
+
+
+# - name: Move ROOT.war file from today's backup folder to Tomcat webapps
+#   ansible.builtin.copy:
+#     src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT.war
+#     dest: /opt/tomcat/rakins/
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#     remote_src: yes
+#   tags: deploy
+
+
+# - name: Copy rakinsurance from backup into html/rakinsurance folder
+#   ansible.builtin.copy:
+#     src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/
+#     dest: /var/www/html/rakinsurance/
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#     remote_src: yes
+#   tags: deploy
 
 
 # - name: Backup existing rakinsurance folder if it exists
