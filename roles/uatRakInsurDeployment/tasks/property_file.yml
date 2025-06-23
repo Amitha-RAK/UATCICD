@@ -4,16 +4,44 @@
     state: stopped
   become: true
 
+- name: List folders in ROOT before propsuat copy
+  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+  register: root_contents_before
+  changed_when: false
 
-- name: Copy propsuat directory from backup to classes folder
+- name: Debug contents before copy
+  ansible.builtin.debug:
+    var: root_contents_before.stdout_lines
+
+
+- name: Ensure destination path exists
+  ansible.builtin.file:
+    path: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755'
+  become: true
+
+- name: Copy propsuat folder from backup to target
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT/WEB-INF/classes/propsuat/
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/ROOT/WEB-INF/classes/propsuat/
     dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
     owner: apache
     group: apache
-    mode: '0644'
+    mode: '0755'
     remote_src: yes
-  tags: deploy
+  become: true
+  tags: propsuat_copy
+
+- name: List folders in ROOT after propsuat copy
+  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+  register: root_contents_after
+  changed_when: false
+
+- name: Debug contents after copy
+  ansible.builtin.debug:
+    var: root_contents_after.stdout_lines
 
 
 - name: Start Tomcat service
@@ -21,4 +49,3 @@
     name: tomcat
     state: started
   become: true
-
