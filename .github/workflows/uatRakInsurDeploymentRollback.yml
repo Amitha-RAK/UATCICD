@@ -27,7 +27,7 @@ jobs:
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeploymentRollback.yml --tags tomcat_stop
   
 
-  BACKUP_DEPLOY:
+  BACKUP_DEPLOY_COPY:
     needs: [STOP_TOMCAT]
     runs-on: 
       labels: uatcicd
@@ -40,7 +40,7 @@ jobs:
 
 
   TOMCAT_START:
-    needs: [BACKUP_DEPLOY]
+    needs: [BACKUP_DEPLOY_COPY]
     runs-on: 
       labels: uatcicd
     steps:
@@ -60,16 +60,7 @@ jobs:
           ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeploymentRollback.yml --tags httpd_stop
 
 
-  COPY_RAKINSURANCE:
-    needs: [HTTPD_STOP]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: Copy Rakinsurance folder to /html/rakinsurance
-        run: |
-          DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeploymentRollback.yml --tags deploy
-
+ 
   
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
@@ -83,7 +74,7 @@ jobs:
 
   
   HTTPD_START:
-    needs: [COPY_RAKINSURANCE]
+    needs: [HTTPD_STOP]
     runs-on: 
       labels: uatcicd
     steps:
