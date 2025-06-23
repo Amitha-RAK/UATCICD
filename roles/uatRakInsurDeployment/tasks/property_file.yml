@@ -11,9 +11,10 @@
     dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
     owner: apache
     group: apache
-    mode: '0755'
+    mode: '0644'
     remote_src: yes
-  tags: propsuat_copy
+  tags: deploy
+
 
 - name: Start Tomcat service
   ansible.builtin.service:
