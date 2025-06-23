@@ -10,83 +10,107 @@ on:
 
 
 
+
+
 jobs:
 
   HTTPD_STOP:
     runs-on: 
       labels: uatcicd
     steps:
-      - name: HTTPD STOP
-        run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_stop
+       - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
+         run: |
+           DEPLOY_DIR="${{ github.event.inputs.deployment_directory }}"
+       - name: Download file from SFTP server
+         uses: appleboy/scp-action@v0.1.4
+         with:
+           host: "10.60.30.11"
+           username: "SIMS_SFTP"
+           password: ${{ secrets.SFTP_PASS }}
+           source: "SIMS_Folder/SIMS_UAT/Deployment_Package/${{ github.event.inputs.deployment_directory }}/"
+           target: "/ansible/deployments"
+           port: 22
+           strip_components: 3
+           rm: false
+           timeout: 60s
 
 
-  STOP_TOMCAT:
-    needs: [HTTPD_STOP]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@main
 
-      - name: List Files
-        run: |
-          ls -tlr
-          pwd
+  # HTTPD_STOP:
+  #   runs-on: 
+  #     labels: uatcicd
+  #   steps:
+  #     - name: HTTPD STOP
+  #       run: |
+  #         ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_stop
 
-      - name: TOMCAT STOP
-        run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_stop
+
+  # STOP_TOMCAT:
+  #   needs: [HTTPD_STOP]
+  #   runs-on: 
+  #     labels: uatcicd
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@main
+
+  #     - name: List Files
+  #       run: |
+  #         ls -tlr
+  #         pwd
+
+  #     - name: TOMCAT STOP
+  #       run: |
+  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_stop
   
-  BACKUP_DEPLOY:
-    needs: [STOP_TOMCAT]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
-        run: |
-          DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags deploy
+  # BACKUP_DEPLOY:
+  #   needs: [STOP_TOMCAT]
+  #   runs-on: 
+  #     labels: uatcicd
+  #   steps:
+  #     - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
+  #       run: |
+  #         DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags deploy
 
-  # UNZIP_RAK_UAT_FILE:
+  # # UNZIP_RAK_UAT_FILE:
+  # #   needs: [BACKUP_DEPLOY]
+  # #   runs-on: 
+  # #     labels: uatcicd
+  # #   steps:
+  # #     - name: Unzip RAK UAT folder
+  # #       run: |
+  # #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
+
+
+  # TOMCAT_START:
   #   needs: [BACKUP_DEPLOY]
   #   runs-on: 
   #     labels: uatcicd
   #   steps:
-  #     - name: Unzip RAK UAT folder
+  #     - name: TOMCAT START
   #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
-
-
-  TOMCAT_START:
-    needs: [BACKUP_DEPLOY]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: TOMCAT START
-        run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
+  #         ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
 
   
-  HTTPD_START:
-    needs: [TOMCAT_START]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: HTTPD START
-        run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags httpd_start
+  # HTTPD_START:
+  #   needs: [TOMCAT_START]
+  #   runs-on: 
+  #     labels: uatcicd
+  #   steps:
+  #     - name: HTTPD START
+  #       run: |
+  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags httpd_start
 
 
 
-  PROPSUAT_COPY:
-    needs: [HTTPD_START]
-    runs-on:
-      labels: uatcicd
-    steps:
-    - name: Copy propsuat from backup and restart Tomcat
-      run: |
-        DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags propsuat_copy
+  # PROPSUAT_COPY:
+  #   needs: [HTTPD_START]
+  #   runs-on:
+  #     labels: uatcicd
+  #   steps:
+  #   - name: Copy propsuat from backup and restart Tomcat
+  #     run: |
+  #       DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+  #       ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags propsuat_copy
 
   
