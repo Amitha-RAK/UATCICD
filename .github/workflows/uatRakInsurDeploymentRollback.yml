@@ -4,23 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       deployment_directory: 
-        description: Enter the directory to be roll back
+        description: Enter the directory to be Rollback
         required: true
         default: Deploy_UAT_27052025
 
 jobs:
 
-  HTTPD_STOP:
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: HTTPD STOP
-        run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags httpd_stop
-
-
   STOP_TOMCAT:
-    needs: [HTTPD_STOP]
     runs-on: 
       labels: uatcicd
     steps:
@@ -34,18 +24,53 @@ jobs:
 
       - name: TOMCAT STOP
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeployment.yml --tags tomcat_stop
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeploymentRollback.yml --tags tomcat_stop
   
+
   BACKUP_DEPLOY:
     needs: [STOP_TOMCAT]
     runs-on: 
       labels: uatcicd
     steps:
-      - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
+      - name: Copy and Deploy ROOT.war to rakins folder
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeploymentRollback.yml --tags deploy
 
+
+
+  TOMCAT_START:
+    needs: [BACKUP_DEPLOY]
+    runs-on: 
+      labels: uatcicd
+    steps:
+      - name: TOMCAT START
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurDeploymentRollback.yml --tags tomcat_start
+
+
+
+  HTTPD_STOP:
+    needs: [TOMCAT_START]
+    runs-on: 
+      labels: uatcicd
+    steps:
+      - name: HTTPD STOP
+        run: |
+          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeploymentRollback.yml --tags httpd_stop
+
+
+  COPY_RAKINSURANCE:
+    needs: [HTTPD_STOP]
+    runs-on: 
+      labels: uatcicd
+    steps:
+      - name: Copy Rakinsurance folder to /html/rakinsurance
+        run: |
+          DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurDeploymentRollback.yml --tags deploy
+
+  
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
   #   runs-on: 
@@ -56,18 +81,9 @@ jobs:
   #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurDeployment.yml --tags unzip
 
 
-  TOMCAT_START:
-    needs: [BACKUP_DEPLOY]
-    runs-on: 
-      labels: uatcicd
-    steps:
-      - name: TOMCAT START
-        run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags tomcat_start
-
   
   HTTPD_START:
-    needs: [TOMCAT_START]
+    needs: [COPY_RAKINSURANCE]
     runs-on: 
       labels: uatcicd
     steps:
@@ -77,14 +93,14 @@ jobs:
 
 
 
-  PROPSUAT_COPY:
-    needs: [HTTPD_START]
-    runs-on:
-      labels: uatcicd
-    steps:
-    - name: Copy propsuat from backup and restart Tomcat
-      run: |
-        DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags propsuat_copy
+  # PROPSUAT_COPY:
+  #   needs: [HTTPD_START]
+  #   runs-on:
+  #     labels: uatcicd
+  #   steps:
+  #   - name: Copy propsuat from backup and restart Tomcat
+  #     run: |
+  #       DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+  #       ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurDeployment.yml --tags propsuat_copy
 
   

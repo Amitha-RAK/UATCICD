@@ -1,21 +1,7 @@
 
-- name: Create backup directory with timestamp
-  ansible.builtin.file:
-    path: "/home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}"
-    state: directory
-    mode: '0755'
-  tags: deploy
-
-- name: Backup existing rakins folder if it exists
-  ansible.builtin.command: mv /opt/tomcat/rakins/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}
-  # args:
-  #   removes: /opt/tomcat/rakins/
-  tags: deploy
-
-
-- name: Move new files from deployment package to Tomcat webapps
+- name: Move ROOT.war file from today's backup folder to Tomcat webapps
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/ROOT.war
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT.war
     dest: /opt/tomcat/rakins/
     owner: apache
     group: apache
@@ -24,32 +10,9 @@
   tags: deploy
 
 
-- name: Backup existing rakinsurance folder if it exists
-  ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}
-  tags: deploy
-
-
-- name: Create Rakinsurance folder
-  ansible.builtin.file :
-    path: /var/www/html/rakinsurance/
-    state: directory
-    recurse: yes
-    owner: apache
-    group: apache
-    mode: '0644'
-  tags: deploy
-
-
-- name: Extract deployment date from deploy_dir
-  set_fact:
-    zip_date: "{{ deploy_dir | regex_search('\\d{8}') }}"
-  tags: deploy
-
-
-
-- name: Unarchive rak-uat ZIP with today's date
-  ansible.builtin.unarchive:
-    src: "/home/qp_setup_admin/UAT_Deployment_Package/{{ deploy_dir }}/rak-uat-{{ zip_date }}.zip"
+- name: Copy rakinsurance from backup into html/rakinsurance folder
+  ansible.builtin.copy:
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
@@ -57,24 +20,58 @@
     remote_src: yes
   tags: deploy
 
-- name: Copy fixedfiles from backup into new rakinsurance folder
-  ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/fixedfiles/
-    dest: /var/www/html/rakinsurance/fixedfiles/
-    owner: apache
-    group: apache
-    mode: '0644'
-    remote_src: yes
-  tags: deploy
+
+# - name: Backup existing rakinsurance folder if it exists
+#   ansible.builtin.command: mv /var/www/html/rakinsurance/ /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}
+#   tags: deploy
 
 
-- name: Set ownership of rakinsurance folder to apache 
-  ansible.builtin.file:
-    path: /var/www/html/rakinsurance/
-    owner: apache
-    group: apache
-    recurse: yes
-  tags: deploy
+# - name: Create Rakinsurance folder
+#   ansible.builtin.file :
+#     path: /var/www/html/rakinsurance/
+#     state: directory
+#     recurse: yes
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#   tags: deploy
+
+
+# - name: Extract deployment date from deploy_dir
+#   set_fact:
+#     zip_date: "{{ deploy_dir | regex_search('\\d{8}') }}"
+#   tags: deploy
+
+
+
+# - name: Unarchive rak-uat ZIP with today's date
+#   ansible.builtin.unarchive:
+#     src: "/home/qp_setup_admin/UAT_Deployment_Package/{{ deploy_dir }}/rak-uat-{{ zip_date }}.zip"
+#     dest: /var/www/html/rakinsurance/
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#     remote_src: yes
+#   tags: deploy
+
+# - name: Copy fixedfiles from backup into new rakinsurance folder
+#   ansible.builtin.copy:
+#     src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakinsurance/fixedfiles/
+#     dest: /var/www/html/rakinsurance/fixedfiles/
+#     owner: apache
+#     group: apache
+#     mode: '0644'
+#     remote_src: yes
+#   tags: deploy
+
+
+# - name: Set ownership of rakinsurance folder to apache 
+#   ansible.builtin.file:
+#     path: /var/www/html/rakinsurance/
+#     owner: apache
+#     group: apache
+#     recurse: yes
+#   tags: deploy
 
 # - name: Move new files from deployment package to Tomcat webapps
 #   ansible.builtin.unarchive:

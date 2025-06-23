@@ -4,24 +4,24 @@
     state: stopped
   become: true
 
-- name: List folders in ROOT before propsuat copy
-  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
-  register: root_contents_before
-  changed_when: false
+# - name: List folders in ROOT before propsuat copy
+#   ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+#   register: root_contents_before
+#   changed_when: false
 
-- name: Debug contents before copy
-  ansible.builtin.debug:
-    var: root_contents_before.stdout_lines
+# - name: Debug contents before copy
+#   ansible.builtin.debug:
+#     var: root_contents_before.stdout_lines
 
 
-- name: Ensure destination path exists
-  ansible.builtin.file:
-    path: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
-    state: directory
-    owner: apache
-    group: apache
-    mode: '0755'
-  become: true
+# - name: Ensure destination path exists
+#   ansible.builtin.file:
+#     path: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
+#     state: directory
+#     owner: apache
+#     group: apache
+#     mode: '0755'
+#   become: true
 
 - name: Copy propsuat folder from backup to target
   ansible.builtin.copy:
@@ -34,14 +34,14 @@
   become: true
   tags: propsuat_copy
 
-- name: List folders in ROOT after propsuat copy
-  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
-  register: root_contents_after
-  changed_when: false
+# - name: List folders in ROOT after propsuat copy
+#   ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+#   register: root_contents_after
+#   changed_when: false
 
-- name: Debug contents after copy
-  ansible.builtin.debug:
-    var: root_contents_after.stdout_lines
+# - name: Debug contents after copy
+#   ansible.builtin.debug:
+#     var: root_contents_after.stdout_lines
 
 
 - name: Start Tomcat service
