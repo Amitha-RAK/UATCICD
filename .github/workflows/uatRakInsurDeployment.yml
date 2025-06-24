@@ -24,7 +24,7 @@ jobs:
           pwd      
       - name: DOWNLOAD ARTIFACT
         run: |
-          ansible-playbook -b --extra-vars 'target=localhost' playbook/uatRakInsurDeployment.yml --tags download_artifact
+          ansible-playbook -b --extra-vars 'target=localhost' -e deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurDeployment.yml --tags download_artifact
 
 
 
