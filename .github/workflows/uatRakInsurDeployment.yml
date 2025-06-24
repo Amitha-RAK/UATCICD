@@ -9,30 +9,17 @@ on:
         default: Deploy_UAT_27052025
 
 
-
-
-
 jobs:
 
-  HTTPD_STOP:
+  DOWNLOAD_ARTIFACT:
     runs-on: 
       labels: uatcicd
     steps:
-       - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
-         run: |
-           DEPLOY_DIR="${{ github.event.inputs.deployment_directory }}"
-       - name: Download file from SFTP server
-         uses: appleboy/scp-action@v0.1.4
-         with:
-           host: "10.60.30.11"
-           username: "SIMS_SFTP"
-           password: ${{ secrets.SFTP_PASS }}
-           source: "SIMS_Folder/SIMS_UAT/Deployment_Package/${{ github.event.inputs.deployment_directory }}/"
-           target: "/ansible/deployments"
-           port: 22
-           strip_components: 3
-           rm: false
-           timeout: 60s
+      - name: DOWNLOAD ARTIFACT
+        run: |
+          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags download_artifact
+
+
 
 
 

@@ -73,3 +73,8 @@
   import_tasks: property_file.yml
   tags: propsuat_copy
   ignore_errors: true
+
+- name: SFTP connection
+  import_tasks: download_artifact.yml
+  tags: download_artifact
+  ignore_errors: true
