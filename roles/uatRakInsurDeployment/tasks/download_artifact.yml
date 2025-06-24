@@ -16,7 +16,7 @@
   ansible.builtin.shell: |
     sshpass -p '{{ sftp_pass }}' sftp {{ sftp_user }}@{{ sftp_host }} <<EOF
     lcd {{ local_target }}
-    cd {{ remote_path }}{{ deploy_dir }}
+    cd "{{ remote_path }}/{{ deploy_dir }}"
     mget -r *
     bye
     EOF
