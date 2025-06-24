@@ -24,7 +24,7 @@ jobs:
           pwd      
       - name: DOWNLOAD ARTIFACT
         run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurDeployment.yml --tags download_artifact
+          ansible-playbook -b \--extra-vars 'target=localhost' \playbook/uatRakInsurDeployment.yml --tags download_artifact
 
 
 
