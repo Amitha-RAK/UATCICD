@@ -16,7 +16,7 @@
   ansible.builtin.shell: |
     sshpass -p '{{ sftp_pass }}' sftp {{ sftp_user }}@{{ sftp_host }} <<EOF
     lcd {{ local_target }}
-    cd "/SIMS_Folder/SIMS_UAT/Deployment_Package/Deploy_UAT_27052025"
+    cd "/SIMS_Folder/SIMS_UAT/Deployment_Package/"
     mget -r *
     bye
     EOF
