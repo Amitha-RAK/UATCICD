@@ -12,8 +12,7 @@ on:
 jobs:
 
   DOWNLOAD_ARTIFACT:
-    runs-on: 
-      labels: CICD-Runner
+    runs-on: CICD-Runner
     steps:
       - name: Checkout code
         uses: actions/checkout@main
