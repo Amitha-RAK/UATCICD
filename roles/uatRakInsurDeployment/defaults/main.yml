@@ -1,6 +1,18 @@
-sftp_host: 10.60.30.11
-sftp_port: 22
-sftp_user: SIMS_SFTP
-sftp_pass: 1Y">g==GRK=
-remote_path: '/SIMS_Folder/SIMS_UAT/Deployment_Package/'
-local_target: '/home/qp_setup_admin/UAT_Deployment_Package/'
+# sftp_host: 10.60.30.11
+# sftp_port: 22
+# sftp_user: SIMS_SFTP
+# sftp_pass: 1Y">g==GRK=
+# remote_path: '/SIMS_Folder/SIMS_UAT/Deployment_Package/'
+# local_target: '/home/qp_setup_admin/UAT_Deployment_Package/'
+
+
+- name: Download artifacts to UAT server
+  hosts: roc-uatvinylplus
+  become: yes
+  vars:
+    sftp_host: 10.60.30.11
+    sftp_port: 22
+    sftp_user: SIMS_SFTP
+    sftp_pass: 1Y">g==GRK=
+    remote_path: '/SIMS_Folder/SIMS_UAT/Deployment_Package/'
+    local_target: '/home/qp_setup_admin/UAT_Deployment_Package/'
