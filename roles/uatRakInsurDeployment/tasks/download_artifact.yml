@@ -10,14 +10,14 @@
 
 - name: Ensure local target directory exists
   ansible.builtin.file:
-    path: "{{ local_target }}"
+    path: "{{ hosts }}"
     state: directory
     mode: '0755'
 
 - name: Download artifact folder using SFTP
   ansible.builtin.shell: |
     sshpass -p '{{ sftp_pass }}' sftp {{ sftp_user }}@{{ sftp_host }} <<EOF
-    lcd {{ local_target }}
+    lcd {{ hosts }}
     cd "/SIMS_Folder/SIMS_UAT/Deployment_Package"
     mget -r {{ deploy_dir }}
     bye
