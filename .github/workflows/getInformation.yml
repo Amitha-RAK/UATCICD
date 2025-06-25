@@ -28,7 +28,7 @@ jobs:
   # BACKUP_DEPLOY:
   #   needs: [STOP_TOMCAT]
   #   runs-on:
-  #     labels: uatcicd     
+  #     labels: cicduatrunner     
   #   steps:
   #     - name: Checkout code
   #       uses: actions/checkout@main
@@ -45,7 +45,7 @@ jobs:
   # TOMCAT_START:
   #   needs: [BACKUP_DEPLOY]
   #   runs-on:
-  #     labels: uatcicd     
+  #     labels: cicduatrunner     
   #   steps:
   #     - name: Checkout code
   #       uses: actions/checkout@main

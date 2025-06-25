@@ -12,7 +12,7 @@ jobs:
 
   STOP_TOMCAT:
     runs-on: 
-      labels: uatcicd
+      labels: cicduatrunner
     steps:
       - name: Checkout code
         uses: actions/checkout@main
@@ -30,7 +30,7 @@ jobs:
   BACKUP_DEPLOY_COPY:
     needs: [STOP_TOMCAT]
     runs-on: 
-      labels: uatcicd
+      labels: cicduatrunner
     steps:
       - name: Copy and Deploy ROOT.war to rakins folder
         run: |
@@ -42,7 +42,7 @@ jobs:
   TOMCAT_START:
     needs: [BACKUP_DEPLOY_COPY]
     runs-on: 
-      labels: uatcicd
+      labels: cicduatrunner
     steps:
       - name: TOMCAT START
         run: |
@@ -53,7 +53,7 @@ jobs:
   HTTPD_STOP:
     needs: [TOMCAT_START]
     runs-on: 
-      labels: uatcicd
+      labels: cicduatrunner
     steps:
       - name: HTTPD STOP
         run: |
@@ -65,7 +65,7 @@ jobs:
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
   #   runs-on: 
-  #     labels: uatcicd
+  #     labels: cicduatrunner
   #   steps:
   #     - name: Unzip RAK UAT folder
   #       run: |
@@ -76,7 +76,7 @@ jobs:
   HTTPD_START:
     needs: [HTTPD_STOP]
     runs-on: 
-      labels: uatcicd
+      labels: cicduatrunner
     steps:
       - name: HTTPD START
         run: |
@@ -87,7 +87,7 @@ jobs:
   # PROPSUAT_COPY:
   #   needs: [HTTPD_START]
   #   runs-on:
-  #     labels: uatcicd
+  #     labels: cicduatrunner
   #   steps:
   #   - name: Copy propsuat from backup and restart Tomcat
   #     run: |
