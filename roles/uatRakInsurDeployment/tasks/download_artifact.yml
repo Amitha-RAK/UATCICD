@@ -8,16 +8,34 @@
 
 
 
+# - name: Ensure local target directory exists
+#   ansible.builtin.file:
+#     path: "{{ local_target }}"
+#     state: directory
+#     mode: '0755'
+
+# - name: Download artifact folder using SFTP
+#   ansible.builtin.shell: |
+#     sshpass -p '{{ sftp_pass }}' sftp {{ sftp_user }}@{{ sftp_host }} <<EOF
+#     lcd {{ local_target }}
+#     cd "/SIMS_Folder/SIMS_UAT/Deployment_Package"
+#     mget -r {{ deploy_dir }}
+#     bye
+#     EOF
+#   args:
+#     executable: /bin/bash
+
+
 - name: Ensure local target directory exists
   ansible.builtin.file:
-    path: "{{ hosts }}"
+    path: "{{ local_target }}"
     state: directory
     mode: '0755'
 
 - name: Download artifact folder using SFTP
   ansible.builtin.shell: |
     sshpass -p '{{ sftp_pass }}' sftp {{ sftp_user }}@{{ sftp_host }} <<EOF
-    lcd {{ hosts }}
+    lcd {{ local_target }}
     cd "/SIMS_Folder/SIMS_UAT/Deployment_Package"
     mget -r {{ deploy_dir }}
     bye
