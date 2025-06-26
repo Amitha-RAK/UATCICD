@@ -5,7 +5,7 @@
   become: true
 
 - name: List folders in ROOT before propsuat copy
-  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+  ansible.builtin.command: ls -l /opt/tomcat/wpi/ROOT/
   register: root_contents_before
   changed_when: false
 
