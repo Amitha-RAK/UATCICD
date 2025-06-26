@@ -13,7 +13,7 @@
   tags: deploy
 
 
-- name: Move new files from deployment package to Tomcat WPI
+- name: Move new files from deployment package to WPI
   ansible.builtin.copy:
     src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/ROOT.war
     dest: /opt/tomcat/wpi/
