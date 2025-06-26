@@ -16,7 +16,7 @@
 
 - name: Ensure destination path exists
   ansible.builtin.file:
-    path: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
+    path: /opt/tomcat/wpi/ROOT/WEB-INF/classes/propsuat/
     state: directory
     owner: apache
     group: apache
@@ -25,8 +25,8 @@
 
 - name: Copy propsuat folder from backup to target
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT/WEB-INF/classes/propsuat/
-    dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/wpi_backup_{{ folder_date }}/ROOT/WEB-INF/classes/propsuat/
+    dest: /opt/tomcat/wpi/ROOT/WEB-INF/classes/propsuat/
     owner: apache
     group: apache
     mode: '0755'
@@ -35,7 +35,7 @@
   tags: propsuat_copy
 
 - name: List folders in ROOT after propsuat copy
-  ansible.builtin.command: ls -l /opt/tomcat/rakins/ROOT/
+  ansible.builtin.command: ls -l /opt/tomcat/wpi/ROOT/
   register: root_contents_after
   changed_when: false
 
