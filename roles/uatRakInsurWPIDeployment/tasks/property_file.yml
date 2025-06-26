@@ -25,7 +25,7 @@
 
 - name: Copy propsuat folder from backup to target
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/wpi_backup_{{ folder_date }}/ROOT/WEB-INF/classes/propsuat/
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/wpi_backup_{{ folder_date }}/wpi/ROOT/WEB-INF/classes/propsuat/
     dest: /opt/tomcat/wpi/ROOT/WEB-INF/classes/propsuat/
     owner: apache
     group: apache
