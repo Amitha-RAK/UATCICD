@@ -15,7 +15,7 @@
 
 - name: Move new files from deployment package to Tomcat webapps
   ansible.builtin.copy:
-    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/ROOT.war
+    src: /home/qp_setup_admin/UAT_Deployment_Package/{{deploy_dir}}/
     dest: /opt/tomcat/rakins/
     owner: apache
     group: apache
