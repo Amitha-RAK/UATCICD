@@ -1,0 +1,6 @@
+
+
+- name: httpd STOP 
+  systemd: 
+    name: httpd
+    state: stopped

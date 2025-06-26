@@ -1,0 +1,32 @@
+# - name: Stop Tomcat
+#   ansible.builtin.systemd:
+#     name: tomcat
+#     state: stopped
+
+
+# - name: Print USER OUTPUT
+#   debug:
+#     var: preout
+#   ignore_errors: true
+
+ 
+
+# - name: Gather Disk Space
+#   shell: "df -h  | awk 'NR==2 {print $3}'"
+#   register: disk_space
+ 
+
+# - name: Print disk_space OUTPUT
+#   debug:
+#     var: disk_space
+#   ignore_errors: true
+
+
+# - name:  PRINT DISKSPACE
+#   debug:
+#     msg: "THE FREE DISK SPACE WAS : {{ disk_space.stdout_lines }}" 
+
+- name: TOMCAT STOP 
+  systemd: 
+    name: tomcat
+    state: stopped
