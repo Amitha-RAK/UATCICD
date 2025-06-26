@@ -48,7 +48,7 @@ jobs:
     runs-on: 
       labels: cicduatrunner
     steps:
-      - name: BACKUP, DEPLOY ROOT.war and Unzip RAK-UAT Zip file
+      - name: BACKUP, DEPLOY ROOT.war 
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags deploy
