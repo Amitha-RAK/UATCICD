@@ -3,4 +3,4 @@
   # become_method: su
   gather_facts: yes
   roles:
-    - uatRakInsurDeployment
+    - uatRakInsurWPIDeployment
