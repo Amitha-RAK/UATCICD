@@ -55,7 +55,7 @@
   tags: tomcat_start
 
 - name: Backup and Deploy
-  import_tasks: deploy_root.yml
+  import_tasks: wpi_deploy_root.yml
   tags: deploy
   ignore_errors: true
 

@@ -3,7 +3,7 @@ name: UAT-RAKINSURANCE-WPI-DEPLOYMENT
 on:
   workflow_dispatch:
     inputs:
-      deployment_directory: 
+      wpi_deployment_directory: 
         description: Enter the directory to be deployed
         required: true
         default: Deploy_WPI_UAT_30042025
@@ -24,7 +24,7 @@ jobs:
   #         pwd      
   #     - name: DOWNLOAD ARTIFACT
   #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
+  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_wpi_deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
 
 
   STOP_TOMCAT:
@@ -51,7 +51,7 @@ jobs:
       - name: BACKUP, DEPLOY ROOT.war 
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.wpi_deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags deploy
 
   # UNZIP_RAK_UAT_FILE:
   #   needs: [BACKUP_DEPLOY]
@@ -60,7 +60,7 @@ jobs:
   #   steps:
   #     - name: Unzip RAK UAT folder
   #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" playbook/uatRakInsurWPIDeployment.yml --tags unzip
+  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.wpi_deployment_directory }}" playbook/uatRakInsurWPIDeployment.yml --tags unzip
 
 
   TOMCAT_START:
@@ -70,7 +70,7 @@ jobs:
     steps:
       - name: TOMCAT START
         run: |
-          ansible-playbook -b \--extra-vars 'target=ROC-UATVINYLPLUS' \playbook/uatRakInsurWPIDeployment.yml --tags tomcat_start
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurWPIDeployment.yml --tags tomcat_start
 
 
 
@@ -82,6 +82,6 @@ jobs:
     - name: Copy propsuat from backup and restart Tomcat
       run: |
         DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags propsuat_copy
+        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.wpi_deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags propsuat_copy
 
   
