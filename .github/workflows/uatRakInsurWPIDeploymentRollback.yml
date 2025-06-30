@@ -35,7 +35,7 @@ jobs:
       - name: Copy and Deploy ROOT.war to WPI folder
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeploymentRollback.yml --tags deploy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeploymentRollback.yml --tags deploy
 
 
 
@@ -65,7 +65,7 @@ jobs:
       - name: Copy and Deploy ROOT.war to WPI folder
         run: |
           DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e deploy_dir="${{ github.event.inputs.deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeploymentRollback.yml --tags propsuat_copy
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeploymentRollback.yml --tags wpi_propsuat_copy
 
 
 

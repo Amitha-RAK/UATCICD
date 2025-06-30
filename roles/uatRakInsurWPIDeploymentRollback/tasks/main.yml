@@ -55,11 +55,11 @@
   tags: tomcat_start
 
 - name: Backup and Deploy
-  import_tasks: deploy_root.yml
+  import_tasks: wpi_deploy_root.yml
   tags: deploy
   ignore_errors: true
 
 - name: Apply property file for deployment
   import_tasks: property_file.yml
-  tags: propsuat_copy
+  tags: wpi_propsuat_copy
   ignore_errors: true

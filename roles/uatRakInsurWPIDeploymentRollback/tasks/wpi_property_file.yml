@@ -14,7 +14,7 @@
     mode: '0755'
     remote_src: yes
   become: true
-  tags: propsuat_copy
+  tags: wpi_propsuat_copy
 
 - name: Start Tomcat service
   ansible.builtin.service:
