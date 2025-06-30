@@ -60,6 +60,6 @@
   ignore_errors: true
 
 - name: Apply property file for deployment
-  import_tasks: property_file.yml
+  import_tasks: wpi_property_file.yml
   tags: wpi_propsuat_copy
   ignore_errors: true
