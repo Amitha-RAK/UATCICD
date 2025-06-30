@@ -2,7 +2,7 @@
   ansible.builtin.find:
     paths: /home/qp_setup_admin/Backups_UAT_During_Deployment/
     file_type: directory
-    patterns: '^backup_.*'
+    patterns: '^wpi_backup_.*'
     use_regex: true
   register: backup_dirs
   tags: deploy
