@@ -66,14 +66,14 @@ jobs:
 
 
 
-  # PROPSUAT_COPY:
-  #   needs: [TOMCAT_START]
-  #   runs-on:
-  #     labels: cicduatrunner
-  #   steps:
-  #   - name: Copy propsuat from backup and restart Tomcat
-  #     run: |
-  #       DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-  #       ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.wpi_deployment_directory }}" -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags propsuat_copy
+  PROPSUAT_COPY:
+    needs: [TOMCAT_START]
+    runs-on:
+      labels: cicduatrunner
+    steps:
+    - name: Copy propsuat from backup and restart Tomcat
+      run: |
+        DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
+        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags propsuat_copy
 
-  
+ 
