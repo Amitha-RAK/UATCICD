@@ -33,7 +33,7 @@
   ansible.builtin.pause:
     minutes: 3
   tags: wpi_propsuat_copy
-  
+
 - name: Stop Tomcat service
   ansible.builtin.service:
     name: tomcat
@@ -44,7 +44,7 @@
 - name: Copy propsuat folder from backup to target
   ansible.builtin.copy:
     src: "{{ latest_backup_path.path }}/wpi/ROOT/WEB-INF/classes/propsuat/"
-    dest: /opt/tomcat/wpi/ROOT/WEB-INF/classes/
+    dest: /opt/tomcat/wpi/ROOT/WEB-INF/classes/propsuat/
     owner: apache
     group: apache
     mode: '0755'
