@@ -28,6 +28,7 @@ jobs:
 
 
   STOP_TOMCAT:
+    needs: [DOWNLOAD_ARTIFACT]
     runs-on: 
       labels: cicduatrunner
     steps:
