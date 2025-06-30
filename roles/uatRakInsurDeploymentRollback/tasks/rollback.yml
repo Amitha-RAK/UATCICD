@@ -5,13 +5,28 @@
     patterns: '^backup_.*'
     use_regex: true
   register: backup_dirs
-  tags: deploy
 
 - name: Set latest backup path
   set_fact:
     latest_backup_path: "{{ backup_dirs.files | sort(attribute='mtime', reverse=true) | first }}"
   when: backup_dirs.matched > 0
-  tags: deploy
+
+- name: Stop Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: stopped
+  become: true
+
+- name: Delete ROOT folder from rakins
+  ansible.builtin.file:
+    path: "/opt/tomcat/rakins/ROOT/"
+    state: absent
+
+- name: Delete ROOT.war file from rakins
+  ansible.builtin.file:
+    path: "/opt/tomcat/rakins/ROOT.war"
+    state: absent
+
 
 - name: Move ROOT.war from latest backup to Tomcat webapps
   ansible.builtin.copy:
@@ -21,7 +36,15 @@
     group: apache
     mode: '0644'
     remote_src: yes
-  tags: deploy
+
+- name: TOMCAT START
+  systemd: 
+    name: tomcat
+    state: started
+
+- name: Wait for 3 minutes before copying propsuat folder
+  ansible.builtin.pause:
+    minutes: 3
 
 - name: Stop Tomcat service
   ansible.builtin.service:
@@ -38,7 +61,6 @@
     mode: '0755'
     remote_src: yes
   become: true
-  tags: propsuat_copy
 
 
 - name: Start Tomcat service
@@ -47,10 +69,25 @@
     state: started
   become: true
 
+- name: Wait for 3 minutes before copying propsuat folder
+  ansible.builtin.pause:
+    minutes: 2
+
 - name: httpd STOP 
   systemd: 
     name: httpd
     state: stopped
+
+- name: Delete ROOT.war file from rakins
+  ansible.builtin.file:
+    path: "/var/www/html/rakinsurance/"
+    state: absent
+
+
+- name: Delete ROOT.war file from rakins
+  ansible.builtin.file:
+    path: "/var/www/html/rakinsurance/"
+    state: directory
 
 - name: Copy rakinsurance from latest backup to html folder
   ansible.builtin.copy:
@@ -60,7 +97,6 @@
     group: apache
     mode: '0644'
     remote_src: yes
-  tags: deploy
 
 - name: httpd START
   systemd: 
