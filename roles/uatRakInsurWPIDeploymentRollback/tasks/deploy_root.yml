@@ -1,0 +1,25 @@
+- name: Locate latest backup folder
+  ansible.builtin.find:
+    paths: /home/qp_setup_admin/Backups_UAT_During_Deployment/
+    file_type: directory
+    patterns: '^backup_.*'
+    use_regex: true
+  register: backup_dirs
+  tags: deploy
+
+- name: Set latest backup path
+  set_fact:
+    latest_backup_path: "{{ backup_dirs.files | sort(attribute='mtime', reverse=true) | first }}"
+  when: backup_dirs.matched > 0
+  tags: deploy
+
+- name: Move ROOT.war from latest backup to Tomcat webapps
+  ansible.builtin.copy:
+    src: "{{ latest_backup_path.path }}/wpi/ROOT.war"
+    dest: /opt/tomcat/wpi/
+    owner: apache
+    group: apache
+    mode: '0644'
+    remote_src: yes
+  tags: deploy
+

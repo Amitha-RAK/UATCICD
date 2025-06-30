@@ -1,0 +1,23 @@
+- name: Stop Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: stopped
+  become: true
+
+
+- name: Copy propsuat folder from backup to target
+  ansible.builtin.copy:
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/wpi/ROOT/WEB-INF/classes/propsuat/
+    dest: /opt/tomcat/wpi/ROOT/WEB-INF/classes/
+    owner: apache
+    group: apache
+    mode: '0755'
+    remote_src: yes
+  become: true
+  tags: propsuat_copy
+
+- name: Start Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: started
+  become: true

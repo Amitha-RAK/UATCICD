@@ -1,4 +1,4 @@
-name: UAT-RAKINSURANCE-WPI-DEPLOYMENT
+name: UAT-WPI-RAKEZ-DEPLOYMENT
 
 on:
   workflow_dispatch:
