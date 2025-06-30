@@ -24,7 +24,7 @@ jobs:
           pwd      
       - name: DOWNLOAD ARTIFACT
         run: |
-          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.wpi_deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
 
 
   STOP_TOMCAT:
