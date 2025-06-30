@@ -60,7 +60,7 @@
     group: apache
     mode: '0644'
     remote_src: yes
-  tags: rakinsur_copy
+  tags: deploy
 
 - name: httpd START
   systemd: 
