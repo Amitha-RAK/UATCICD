@@ -23,6 +23,12 @@
     remote_src: yes
   tags: deploy
 
+- name: Start Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: started
+  become: true
+
 - name: Stop Tomcat service
   ansible.builtin.service:
     name: tomcat
