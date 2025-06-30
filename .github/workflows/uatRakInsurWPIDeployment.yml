@@ -74,6 +74,6 @@ jobs:
     - name: Copy propsuat from backup and restart Tomcat
       run: |
         DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags propsuat_copy
+        ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeployment.yml --tags wpi_propsuat_copy
 
  
