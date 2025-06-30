@@ -71,8 +71,8 @@ jobs:
     runs-on:
       labels: cicduatrunner
     steps:
-    - name: Wait for 2 minute
-      run: sleep 120
+    - name: Wait for 3 minute
+      run: sleep 180
 
     - name: Copy propsuat from backup and restart Tomcat
       run: |
