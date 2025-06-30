@@ -54,7 +54,7 @@
 
 - name: Copy rakinsurance from latest backup to html folder
   ansible.builtin.copy:
-    src: "{{ latest_backup_path.path }}/rakinsurance/*"
+    src: "{{ latest_backup_path.path }}/rakinsurance/"
     dest: /var/www/html/rakinsurance/
     owner: apache
     group: apache
