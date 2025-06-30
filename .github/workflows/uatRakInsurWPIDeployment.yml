@@ -11,20 +11,20 @@ on:
 
 jobs:
 
-  # DOWNLOAD_ARTIFACT:
-  #   runs-on: 
-  #     labels: cicduatrunner
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@main
+  DOWNLOAD_ARTIFACT:
+    runs-on: 
+      labels: cicduatrunner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
 
-  #     - name: List Files
-  #       run: |
-  #         ls -tlr
-  #         pwd      
-  #     - name: DOWNLOAD ARTIFACT
-  #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_wpi_deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
+      - name: List Files
+        run: |
+          ls -tlr
+          pwd      
+      - name: DOWNLOAD ARTIFACT
+        run: |
+          ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e wpi_deploy_dir="${{ github.event.inputs.deployment_directory }}"  playbook/uatRakInsurWPIDeployment.yml --tags download_artifact
 
 
   STOP_TOMCAT:
