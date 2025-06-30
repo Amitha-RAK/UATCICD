@@ -59,7 +59,7 @@
   tags: deploy
   ignore_errors: true
 
-- name: Apply property file for deployment
-  import_tasks: wpi_property_file.yml
-  tags: wpi_propsuat_copy
-  ignore_errors: true
+# - name: Apply property file for deployment
+#   import_tasks: wpi_property_file.yml
+#   tags: wpi_propsuat_copy
+#   ignore_errors: true
