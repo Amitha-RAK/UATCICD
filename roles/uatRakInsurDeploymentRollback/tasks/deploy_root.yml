@@ -23,6 +23,35 @@
     remote_src: yes
   tags: deploy
 
+- name: Stop Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: stopped
+  become: true
+
+- name: Copy propsuat folder from backup to target
+  ansible.builtin.copy:
+    src: /home/qp_setup_admin/Backups_UAT_During_Deployment/backup_{{ folder_date }}/rakins/ROOT/WEB-INF/classes/propsuat/
+    dest: /opt/tomcat/rakins/ROOT/WEB-INF/classes/propsuat/
+    owner: apache
+    group: apache
+    mode: '0755'
+    remote_src: yes
+  become: true
+  tags: propsuat_copy
+
+
+- name: Start Tomcat service
+  ansible.builtin.service:
+    name: tomcat
+    state: started
+  become: true
+
+- name: httpd STOP 
+  systemd: 
+    name: httpd
+    state: stopped
+
 - name: Copy rakinsurance from latest backup to html folder
   ansible.builtin.copy:
     src: "{{ latest_backup_path.path }}/rakinsurance/"
@@ -32,4 +61,9 @@
     mode: '0644'
     remote_src: yes
   tags: deploy
+
+- name: httpd START
+  systemd: 
+    name: httpd
+    state: started
 
