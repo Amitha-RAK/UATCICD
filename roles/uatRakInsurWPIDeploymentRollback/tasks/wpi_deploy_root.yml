@@ -4,13 +4,13 @@
     file_type: directory
     patterns: '^wpi_backup_.*'
     use_regex: true
-  register: backup_dirs
+  register: wpi_backup_dirs
   tags: deploy
 
 - name: Set latest backup path
   set_fact:
-    latest_backup_path: "{{ backup_dirs.files | sort(attribute='mtime', reverse=true) | first }}"
-  when: backup_dirs.matched > 0
+    latest_backup_path: "{{ wpi_backup_dirs.files | sort(attribute='mtime', reverse=true) | first }}"
+  when: wpi_backup_dirs.matched > 0
   tags: deploy
 
 - name: Move ROOT.war from latest backup to Tomcat webapps
