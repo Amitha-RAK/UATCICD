@@ -29,6 +29,11 @@
     state: started
   become: true
 
+- name: Wait for 3 minutes before copying propsuat folder
+  ansible.builtin.pause:
+    minutes: 3
+  tags: wpi_propsuat_copy
+  
 - name: Stop Tomcat service
   ansible.builtin.service:
     name: tomcat
