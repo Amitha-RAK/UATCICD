@@ -16,39 +16,6 @@
   tags: tomcat_stop
   ignore_errors: true
 
-# - name: Create backup directory with timestamp
-#   file:
-#     path: "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}"
-#     state: directory
-#     mode: '0755'
-#   tags: deploy
-
-# - name: Backup existing ROOT.war if it exists
-#   command: mv /opt/tomcat/rakins/ROOT.war "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT.war"
-#   args:
-#     removes: /opt/tomcat/rakins/ROOT.war
-#   ignore_errors: true
-#   tags: deploy
-
-# - name: Backup existing ROOT directory if it exists
-#   command: mv /opt/tomcat/rakins/ROOT "/opt/tomcat/backup_{{ ansible_date_time.iso8601_basic_short }}/ROOT"
-#   args:
-#     removes: /opt/tomcat/rakins/ROOT
-#   ignore_errors: true
-#   tags: deploy
-
-# - name: Move new ROOT.war from deployment package to Tomcat directory
-#   command: cp /home/qp_setup_admin/UAT_Deployment_Package/Deploy_UAT_27052025/ROOT.war /opt/tomcat/rakins/ROOT.war
-#   tags: deploy
-
-# - name: Set permissions and ownership for new ROOT.war
-#   file:
-#     path: /opt/tomcat/rakins/ROOT.war
-#     owner: apache
-#     group: apache
-#     mode: '0644'
-#   tags: deploy
-
 - name: Start Tomcat
   import_tasks: tomcat_start.yml
   ignore_errors: true

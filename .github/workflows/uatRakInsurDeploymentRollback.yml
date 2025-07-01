@@ -2,11 +2,6 @@ name: UAT-RAKINSURANCE-DEPLOYMENT-ROLLBACK
 
 on:
   workflow_dispatch:
-    # inputs:
-    #   deployment_directory: 
-    #     description: Enter the directory to be Rollback
-    #     required: true
-    #     default: Deploy_UAT_27052025
 
 jobs:
 

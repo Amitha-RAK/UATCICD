@@ -11,11 +11,6 @@
     latest_backup_path: "{{ backup_dirs.files | sort(attribute='mtime', reverse=true) | first }}"
   when: backup_dirs.matched > 0
 
-# - name: Stop Tomcat service
-#   ansible.builtin.service:
-#     name: tomcat
-#     state: stopped
-#   become: true
 
 - name: Delete ROOT folder from rakins
   ansible.builtin.file:

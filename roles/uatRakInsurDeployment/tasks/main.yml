@@ -1,5 +1,4 @@
 ---
-# roles/getInformation/tasks/main.yml
 
 - name: Capture the logged-in user
   command: id

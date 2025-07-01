@@ -1,19 +1,9 @@
-# - name: Stop Tomcat
-#   ansible.builtin.systemd:
-#     name: tomcat
-#     state: started
-
 
 - name: TOMCAT START
   systemd: 
     name: tomcat
     state: started
 
-
-# - name: Print USER OUTPUT
-#   debug:
-#     var: preout
-#   ignore_errors: true
 
  
 

@@ -2,11 +2,7 @@ name: UAT-WPIRAKEZ-DEPLOYMENT-ROLLBACK
 
 on:
   workflow_dispatch:
-    # inputs:
-    #   deployment_directory: 
-    #     description: Enter the directory to be Rollback
-    #     required: true
-    #     default: Deploy_UAT_27052025
+   
 
 jobs:
 
@@ -48,32 +44,4 @@ jobs:
         run: |
           ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurWPIDeploymentRollback.yml --tags tomcat_start
 
-  # STOP_TOMCAT1:
-  #   needs: [TOMCAT_START]
-  #   runs-on: 
-  #     labels: cicduatrunner
-  #   steps:
-  #     - name: TOMCAT STOP AGAIN
-  #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurWPIDeploymentRollback.yml --tags tomcat_stop
-
-  # PROPSUAT_COPY:
-  #   needs: [STOP_TOMCAT1]
-  #   runs-on: 
-  #     labels: cicduatrunner
-  #   steps:
-  #     - name: Copy and Deploy ROOT.war to WPI folder
-  #       run: |
-  #         DATE=$(date +'%Y-%m-%d')-"${{ github.run_id }}"
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' -e folder_date="${DATE}" playbook/uatRakInsurWPIDeploymentRollback.yml --tags wpi_propsuat_copy
-
-
-
-  # TOMCAT_START1:
-  #   needs: [PROPSUAT_COPY]
-  #   runs-on: 
-  #     labels: cicduatrunner
-  #   steps:
-  #     - name: TOMCAT START
-  #       run: |
-  #         ansible-playbook -b --extra-vars 'target=ROC-UATVINYLPLUS' playbook/uatRakInsurWPIDeploymentRollback.yml --tags tomcat_start
+  

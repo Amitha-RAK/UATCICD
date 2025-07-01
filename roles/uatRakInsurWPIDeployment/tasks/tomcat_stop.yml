@@ -1,8 +1,3 @@
-# - name: Stop Tomcat
-#   ansible.builtin.systemd:
-#     name: tomcat
-#     state: stopped
-
 
 - name: TOMCAT STOP 
   systemd: 
