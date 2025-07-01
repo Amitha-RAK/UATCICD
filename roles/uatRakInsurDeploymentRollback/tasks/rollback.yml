@@ -37,7 +37,7 @@
     name: tomcat
     state: started
 
-- name: Wait for 3 minutes before copying propsuat folder
+- name: Wait for 2 minutes before copying propsuat folder
   ansible.builtin.pause:
     minutes: 2
 
